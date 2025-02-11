@@ -1,3 +1,7 @@
+import { getGooglePosition, getPlayerPosition } from "../../../../core/state-manager.js"
+import { GoogleComponent } from "../../common/Google.component.js"
+import { PlayerComponent } from "../../common/Player.component.js"
+
 export function CellComponent(y, x) {
     const element = document.createElement('td')
     
@@ -7,6 +11,19 @@ export function CellComponent(y, x) {
 }
 
 async function render(element, x, y) {
-    element.append(`${y}, ${x}`)
+    const googlePosition = await getGooglePosition()
+    const player1Position = await getPlayerPosition(1)
+    const player2Position = await getPlayerPosition(2)
 
+    if (googlePosition.x === x && googlePosition.y === y) {
+        element.append(GoogleComponent().element)
+    }
+
+    if (player1Position.x === x && player1Position.y === y) {
+        element.append(PlayerComponent(1).element)
+    }
+
+    if (player2Position.x === x && player2Position.y === y) {
+        element.append(PlayerComponent(2).element)
+    }
 }
