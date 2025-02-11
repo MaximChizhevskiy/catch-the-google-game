@@ -1,7 +1,14 @@
 
 export function SettingsComponent() {
     const element = document.createElement('div')
-  
-    element.append(`Settings field`)
-    return element
+      
+    render(element)
+    
+    return {element}
 }
+
+async function render(element) {
+    element.append(`Settings field`)
+}
+
+    
