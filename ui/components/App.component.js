@@ -14,6 +14,5 @@ async function render(element) {
     const resultPanelComponent = ResultComponent()
     const gridComponent = GridComponent()
     
-
     element.append(settingsComponent.element, resultPanelComponent.element, gridComponent.element)
 }
