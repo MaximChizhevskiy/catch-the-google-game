@@ -1,4 +1,3 @@
-
 export function SettingsComponent() {
     const element = document.createElement('div')
       
