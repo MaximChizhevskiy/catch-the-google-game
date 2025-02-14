@@ -2,7 +2,8 @@ import {
     GAME_STATUSES
 } from "../../core/constants.js"
 import {
-    getGameStatus
+    getGameStatus,
+    subscribe
 } from "../../core/state-manager.js"
 import {
     GridComponent
@@ -19,16 +20,28 @@ import {
 import { StartComponent } from "./Start/Start.component.js"
 
 export function AppComponent() {
+    const localState = {prevGameStatus: null}
+
     const element = document.createElement('div')
 
-    render(element)
+    subscribe(() => {
+        render(element, localState)
+    })
+
+    render(element, localState)
     return {
         element
     }
 }
 
-async function render(element) {
+async function render(element, localState) {
     const gameStatus = await getGameStatus()
+    
+    if (localState.prevGameStatus === gameStatus) return
+    localState.prevGameStatus = gameStatus
+
+    element.innerHTML = ''
+    
     switch (gameStatus) {
         case GAME_STATUSES.SETTINGS: {
             const settingsComponent = SettingsComponent()
