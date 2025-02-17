@@ -1,17 +1,18 @@
-import { getGooglePoints, getPlayerPoints, subscribe } from "../../../core/state-manager.js"
+import { getGooglePoints, getPlayerPoints, subscribe, unsubscribe } from "../../../core/state-manager.js"
 
 export function ResultComponent() {
     const element = document.createElement('div')
     
-    subscribe(() => {
+    const observer = () => {
         render(element) 
-    })
+    }
+    subscribe(observer)
 
     element.classList.add('result-panel')
           
     render(element)
 
-    return {element}
+    return {element, cleanup: () => {unsubscribe(observer)}}
 }
 
 
