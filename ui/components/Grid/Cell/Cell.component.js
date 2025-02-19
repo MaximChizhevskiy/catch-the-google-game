@@ -7,7 +7,7 @@ export function CellComponent(y, x) {
     const element = document.createElement('td')
     
     const observer = (e) => {
-        if (e.name !== EVENTS.GOOGLE_JUMPED) return
+        if ([EVENTS.GOOGLE_JUMPED, EVENTS.PLAYER1_MOVED, EVENTS.PLAYER2_MOVED].every(name => name !== e.name)) return
         if(e.payload.oldPosition.x === x && e.payload.oldPosition.y === y){
             render(element, x, y)
         }

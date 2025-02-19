@@ -18,6 +18,7 @@ import {
     SettingsComponent
 } from "./Settings/Settings.component.js"
 import { StartComponent } from "./Start/Start.component.js"
+import { WinComponent } from "./Win/Win.Component.js"
 
 export function AppComponent() {
     const localState = {prevGameStatus: null, cleanupFunctions: []}
@@ -65,6 +66,11 @@ async function render(element, localState) {
         case GAME_STATUSES.LOSE: {
             const loseComponent = LoseComponent()
             element.append(loseComponent.element)
+            break
+        }
+        case GAME_STATUSES.WIN: {
+            const winComponent = WinComponent()
+            element.append(winComponent.element)
             break
         }
         default:

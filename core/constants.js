@@ -12,3 +12,10 @@ export const EVENTS = {
     STATUS_CHANGED: 'STATUS_CHANGED',
     SCORES_CHANGED: 'SCORES_CHANGED'
 }
+
+export const MOVING_DIRECTIONS = {
+    UP: 'up',
+    DOWN: 'down',
+    LEFT: 'left',
+    RIGHT: 'right'
+}
