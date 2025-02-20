@@ -61,8 +61,6 @@ function _generateIntegerNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-
-
 function _jumpGoogleToNewPosition() {
     const newPosition = {
         ..._state.positions.google
@@ -80,6 +78,13 @@ function _jumpGoogleToNewPosition() {
 
 let googleJumpInterval
 
+function _isPositionInValidRange(newPosition) {
+    if (newPosition.x < 0 || newPosition.x >= _state.settings.gridSize.columnsCount) return false
+    if (newPosition.y < 0 || newPosition.y >= _state.settings.gridSize.rowsCount) return false
+
+    return true
+}
+
 function _doesPositionMatchWithPlayer1Position(newPosition) {
     return  newPosition.x === _state.positions.players[0].x &&
             newPosition.y === _state.positions.players[0].y
@@ -94,13 +99,6 @@ function _doesPositionMatchWithGooglePosition(newPosition) {
 }
 
 
-function _isPositionInValidRange(positions) {
-    if (positions.x < 0 || positions.x >= _state.settings.gridSize.rowsCount) return false
-    if (positions.y < 0 || positions.y >= _state.settings.gridSize.columnsCount) return false
-
-    return true
-}
-
 function _catchGoogle(playerNumber) {
     const playerIndex = _getPlayerIndexByNumber(playerNumber)
 
@@ -112,10 +110,11 @@ function _catchGoogle(playerNumber) {
         _notifyObservers(EVENTS.STATUS_CHANGED)
         clearInterval(googleJumpInterval)
     } else {
+    const oldPosition = _state.positions.google
     _jumpGoogleToNewPosition()
     _notifyObservers(EVENTS.GOOGLE_JUMPED), {
         oldPosition: oldPosition, 
-        newPosition: newPosition
+        newPosition: _state.positions.google
         }
     }
     
@@ -163,9 +162,10 @@ export async function playAgain() {
     _notifyObservers(GAME_STATUSES.STATUS_CHANGED)
 }
 export async function movePlayer(playerNumber, direction) {
-    if(_state.gameStatus !== GAME_STATUSES.IN_PROGRESS) {
+    if (_state.gameStatus !== GAME_STATUSES.IN_PROGRESS) {
         console.warn('You can move player only when game is in progress')
     }
+
     const playerIndex = _getPlayerIndexByNumber(playerNumber)
     const oldPosition = {..._state.positions.players[playerIndex]}
     const newPosition = {..._state.positions.players[playerIndex]}
@@ -199,8 +199,8 @@ export async function movePlayer(playerNumber, direction) {
     }
     _state.positions.players[playerIndex] = newPosition
     _notifyObservers(EVENTS[`PLAYER${playerNumber}_MOVED`], {
-        oldPosition,
-        newPosition
+        oldPosition: oldPosition,
+        newPosition: newPosition
     })
 }
 //GETTERS/SELECTORS/QUERY
