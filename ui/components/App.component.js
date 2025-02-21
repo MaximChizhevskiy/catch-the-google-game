@@ -5,6 +5,7 @@ import {
     getGameStatus,
     subscribe
 } from "../../core/state-manager.js"
+import { AudioComponent } from "./Audio/Audio.Component.js"
 import {
     GridComponent
 } from "./Grid/Grid.component.js"
@@ -24,6 +25,8 @@ export function AppComponent() {
     const localState = {prevGameStatus: null, cleanupFunctions: []}
 
     const element = document.createElement('div')
+
+    const audioComponent = AudioComponent()
 
     subscribe(() => {
         render(element, localState)
