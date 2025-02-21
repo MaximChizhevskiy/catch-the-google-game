@@ -3,16 +3,17 @@ import { getGooglePoints, getPlayerPoints, subscribe, unsubscribe } from "../../
 
 export function ResultComponent() {
     const element = document.createElement('div')
+
+    element.classList.add('result-panel')
     
     const observer = (e) => {
-        if(e.name === EVENTS.SCORES_CHANGED) {
+        if (e.name === EVENTS.SCORES_CHANGED) {
              render (element)
         }        
     }
     subscribe(observer)
 
-    element.classList.add('result-panel')
-          
+              
     render(element)
 
     return {element, cleanup: () => {unsubscribe(observer)}}
@@ -22,7 +23,7 @@ export function ResultComponent() {
 async function render(element) {
     element.innerHTML = ''
 
-    const googlePoints = await getGooglePoints(0)
+    const googlePoints = await getGooglePoints()
     const player1Points = await getPlayerPoints(1)
     const player2Points = await getPlayerPoints(2)
 

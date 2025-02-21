@@ -36,12 +36,12 @@ async function render(element, localState) {
     
     element.innerHTML = ''
     const gridSize = await getGridSize()
-    for (let x = 0; x < gridSize.rowsCount; x++) {
+    for (let y = 0; y < gridSize.rowsCount; y++) {
         const rowElement = document.createElement('tr')
 
 
-        for (let y = 0; y < gridSize.columnsCount; y++) {
-            const cellComponent = CellComponent(y, x)
+        for (let x = 0; x < gridSize.columnsCount; x++) {
+            const cellComponent = CellComponent(x, y)
             localState.cleanupFunctions.push(cellComponent.cleanup)
             rowElement.append(cellComponent.element)
         }

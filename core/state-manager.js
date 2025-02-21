@@ -62,16 +62,15 @@ function _generateIntegerNumber(min, max) {
 }
 
 function _jumpGoogleToNewPosition() {
-    const newPosition = {
-        ..._state.positions.google
-    }
+    const newPosition = {..._state.positions.google}
     do {
-        newPosition.x = _generateIntegerNumber(0, _state.settings.gridSize.rowsCount - 1)
-        newPosition.y = _generateIntegerNumber(0, _state.settings.gridSize.columnsCount - 1)
+        newPosition.x = _generateIntegerNumber(0, _state.settings.gridSize.columnsCount - 1)
+        newPosition.y = _generateIntegerNumber(0, _state.settings.gridSize.rowsCount - 1)
 
-    } while (_doesPositionMatchWithGooglePosition(newPosition) ||
+    } while (
     _doesPositionMatchWithPlayer1Position(newPosition) ||
-    _doesPositionMatchWithPlayer2Position(newPosition))
+    _doesPositionMatchWithPlayer2Position(newPosition) ||
+    _doesPositionMatchWithGooglePosition(newPosition))
 
     _state.positions.google = newPosition
 }
@@ -112,12 +111,11 @@ function _catchGoogle(playerNumber) {
     } else {
     const oldPosition = _state.positions.google
     _jumpGoogleToNewPosition()
-    _notifyObservers(EVENTS.GOOGLE_JUMPED), {
-        oldPosition: oldPosition, 
+    _notifyObservers(EVENTS.GOOGLE_JUMPED,{
+        oldPosition, 
         newPosition: _state.positions.google
-        }
+        })
     }
-    
 }
 
 //  INTERFACE/ADAPTER
@@ -145,7 +143,7 @@ export async function start() {
         _state.points.google++
         _notifyObservers(EVENTS.SCORES_CHANGED)
               
-        if(_state.points.google === _state.settings.pointsToLose) {
+        if (_state.points.google === _state.settings.pointsToLose) {
             clearInterval(googleJumpInterval)
             _state.gameStatus = GAME_STATUSES.LOSE
             _notifyObservers(EVENTS.STATUS_CHANGED)
@@ -172,16 +170,16 @@ export async function movePlayer(playerNumber, direction) {
 
     switch (direction) {
         case MOVING_DIRECTIONS.UP:
-            newPosition.x --
-            break
-        case MOVING_DIRECTIONS.DOWN:
-            newPosition.x++
-            break
-        case MOVING_DIRECTIONS.LEFT:
             newPosition.y--
             break
-        case MOVING_DIRECTIONS.RIGHT:
+        case MOVING_DIRECTIONS.DOWN:
             newPosition.y++
+            break
+        case MOVING_DIRECTIONS.LEFT:
+            newPosition.x--
+            break
+        case MOVING_DIRECTIONS.RIGHT:
+            newPosition.x++
             break
     }
     const isValidRange = _isPositionInValidRange(newPosition)         
